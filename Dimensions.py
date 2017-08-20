@@ -4,8 +4,8 @@
 """Script to get the dimensions of images in a directory and list them"""
 
 import sys
-# from os import path, listdir
-# from PIL import Image
+from os import listdir
+from PIL import Image
 
 
 folder = sys.argv[1]
@@ -25,11 +25,20 @@ def get_image_names_and_sizes(dir):
             continue
         im = Image.open(dir + f)
         lis.append(f, im.size, im.format)
+    return lis
 
 
 def sorts(lis):
     """Present the options for sorting (H, W, or A) then print to bash"""
-    option = input("Sort by height (H), width (W), or area (A)?")
+    option = input("Sort by height (H), width (W), or area (A)?").upper()
+    if option == 'H':
+        return sorted(lis, key=lambda dim: dim[1][0])
+    elif option == 'W':
+        return sorted(lis, key=lambda dim: dim[1][1])
+    elif option == 'A':
+        return sorted(lis, key=lambda dim: dim[1][0] * dim[1][1])
+    else:
+        return lis
 
 
 if __name__ == '__main__':
